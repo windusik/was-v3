@@ -1,4 +1,4 @@
-```markdown
+
 # ⚡ WAS v3 — Windows Activation Script
 
 [![GitHub stars](https://img.shields.io/github/stars/windusik/was-v3?style=for-the-badge&color=blue)](https://github.com/windusik/was-v3/stargazers)
@@ -190,4 +190,3 @@ was-v3/
   <b>Made with ❤️ for the community</b><br>
   <sub>© 2026 WAS v3 — Free and Open Source Software</sub>
 </p>
-```
