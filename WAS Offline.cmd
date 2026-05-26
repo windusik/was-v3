@@ -418,6 +418,21 @@ goto dk_done
 :MainMenu
 
 cls
+:: ============================================================
+:: WAS v3.2 - Custom ASCII Banner
+:: ============================================================
+echo.
+echo.
+echo         ██     ██  █████  ███████     ██    ██  ██████  
+echo         ██     ██ ██   ██ ██          ██    ██ ██       
+echo         ██  █  ██ ███████ ███████     ██    ██ ██   ███ 
+echo         ██ ██ ██ ██   ██      ██      ██    ██ ██    ██ 
+echo          ███  ██  ██   ██ ███████ ██   ██████   ██████  
+echo.                                                   
+echo         ==========================================
+echo         Windows Activation Script v3.2 - by windusik
+echo         ==========================================
+echo.
 color 07
 title  Microsoft %blank%Activation %blank%Scripts %masver%
 if not defined terminal mode 76, 34
@@ -447,7 +462,7 @@ echo:
 echo:
 echo:
 if %winbuild% GEQ 10240 if %winbuild% LEQ 19045 if not defined _serexist if not defined _evalexist if not defined _ltscexist (
-call :dk_color2 %_Green% "       Tip:" %_White% " To activate ESU updates after W10 EOL, use TSforge option."
+call :dk_color2 %_Green% "       Tip:" %_White% " Leave a star on GitHub! github.com/windusik/was-v3"
 )
 echo:
 echo:
@@ -476,13 +491,12 @@ echo:
 echo:             [5] Check Activation Status
 echo:             [6] Change Windows Edition
 echo:             [7] Change Office Edition
-echo:             __________________________________________________      
-echo:
+echo:             [S] System Info & Cleanup
 echo:             [0] Exit
 echo:       ______________________________________________________________
 echo:
-call :dk_color2 %_White% "         " %_Green% "Choose a menu option using your keyboard [1,2,3,4,5,6,7,0] :"
-choice /C:12345670 /N
+call :dk_color2 %_White% "         " %_Green% "Choose a menu option using your keyboard [1,2,3,4,5,6,7,S,0] :"
+choice /C:1234567S0 /N	
 set _erl=%errorlevel%
 
 if %_erl%==8 exit /b
@@ -493,6 +507,7 @@ if %_erl%==4 setlocal & call :KMSActivation     & cls & endlocal & goto :MainMen
 if %_erl%==3 setlocal & call :TSforgeActivation & cls & endlocal & goto :MainMenu
 if %_erl%==2 setlocal & call :OhookActivation   & cls & endlocal & goto :MainMenu
 if %_erl%==1 setlocal & call :HWIDActivation    & cls & endlocal & goto :MainMenu
+if %_erl%==9 goto :SystemInfo
 goto :MainMenu
 
 :dk_color3
@@ -503,6 +518,31 @@ echo %esc%[%~1%~2%esc%[%~3%~4%esc%[%~5%~6%esc%[0m
 %psc% write-host -back '%1' -fore '%2' '%3' -NoNewline; write-host -back '%4' -fore '%5' '%6'-NoNewline; write-host -back '%7' -fore '%8' '%9'
 )
 exit /b
+
+:SystemInfo
+cls
+title System Info & Cleanup - WAS v3
+echo.
+echo ============================================================
+echo                 SYSTEM INFORMATION
+echo ============================================================
+echo.
+echo OS        : %winos% (%winbuild%)
+echo Arch      : %PROCESSOR_ARCHITECTURE%
+echo User      : %USERNAME%
+echo Computer  : %COMPUTERNAME%
+echo RAM       : %psc% "Get-WmiObject Win32_ComputerSystem | ForEach-Object { [math]::Round($_.TotalPhysicalMemory/1GB) }" %nul6%
+echo.
+echo ============================================================
+echo               CLEANUP ACTIVATION CACHE
+echo ============================================================
+echo.
+call :_taskclear-cache
+echo KMS cache cleared.
+echo.
+call :dk_color %Green% "Press any key to return to main menu..."
+pause >nul
+goto :MainMenu
 
 ::========================================================================================================================================
 
@@ -1167,12 +1207,12 @@ if %_NCS% EQU 1 (
 for /F %%a in ('echo prompt $E ^| cmd') do set "esc=%%a"
 set     "Red="41;97m""
 set    "Gray="100;97m""
-set   "Green="42;97m""
+set   "Green="46;97m""        :: Cyan фон, белый текст
 set    "Blue="44;97m""
 set   "White="107;91m""
 set    "_Red="40;91m""
 set  "_White="40;37m""
-set  "_Green="40;92m""
+set  "_Green="40;96m""        :: Ярко-cyan текст на черном
 set "_Yellow="40;93m""
 ) else (
 set     "Red="Red" "white""
